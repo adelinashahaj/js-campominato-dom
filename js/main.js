@@ -23,7 +23,7 @@ caselledaSelezionareDom.addEventListener('change',
 
 
 
-const numberOfBombs = 16;
+
 
 
 domButton.addEventListener('click',
@@ -48,9 +48,9 @@ domButton.addEventListener('click',
 
            
 
-             // Creo l'array vuoto che conterrà i numeri non bombe cliccati dall'utente
-            let rightAttemptsArray = [];
+            
              // creo le bombe
+             const numberOfBombs = 16;
              let arraybombe = [];
              arraybombe = createBombs(nrcaselle,numberOfBombs);
              console.log(arraybombe);
@@ -64,24 +64,34 @@ domButton.addEventListener('click',
                     this.classList.toggle('blue');
                     console.log(i);
 
-                });
-                casellacliccata = i;
-                let bombatrovata = false;
-                for (let i = 1; i<arraybombe.length; i++){
-                    if(casellacliccata == arraybombe[i]){
-                        bombatrovata = true;
-                    }
-                }
-                if (bombatrovata == true){
-                    currentElement.classList.add('red');
 
-                }else{
-                    currentElement.classList.add('blue');
-                }
-                
+                    casellacliccata = i;
+                    let bombatrovata = false;
+                    for (let i = 0; i<arraybombe.length; i++){
+                        if(casellacliccata == arraybombe[i]){
+                            bombatrovata = true;
+                        }
+                    }
+                    if (bombatrovata == true){
+                        currentElement.classList.add('red');
+    
+                    }else{
+                        currentElement.classList.add('blue');
+                    }
+                    
+
+                });
+               
                 gridDom.append(currentElement);
             }
            console.log(nrcaselle); 
+
+
+
+
+
+
+
 
           // Funzione che crea ogni singolo box all'interno del grid principale
            function createNewSquare(numero) {
