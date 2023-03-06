@@ -67,10 +67,16 @@ main{
     padding-top: 20px;
 }
 
-.square.clicked {
-    background-color: rgb(235, 155, 155);
-}
 
+.square.blue{
+    background-color: blue;
+    
+  }
+  
+.square.red{
+    background-color: red;
+    
+  }
 
 .casellagioco{
     display: flex;
