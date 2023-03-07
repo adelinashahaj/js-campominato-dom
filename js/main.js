@@ -4,6 +4,7 @@ let caselledaSelezionareDom = document.getElementById('casellaSelezione');
 let facileDom = document.getElementById('facile');
 let medioDom = document.getElementById('medio');
 let dificileDom = document.getElementById('dificile');
+let myscoreDom = document.getElementById('titolo');
 
 let domButton = document.querySelector('#playBtn');
 
@@ -32,7 +33,8 @@ domButton.addEventListener('click',
             let nrcaselle = "";
             let sizeCaselle = '';
           
-            
+            let freeCells = [];
+            let gameOver = false;
 
             if (valoreGioco === 'facileDom'){
                 nrcaselle = 100;
@@ -47,10 +49,11 @@ domButton.addEventListener('click',
             sizeCaselle = Math.sqrt(nrcaselle); 
 
            
-
+            
+           
             
              // creo le bombe
-             const numberOfBombs = 16;
+             let numberOfBombs = 16;
              let arraybombe = [];
              arraybombe = createBombs(nrcaselle,numberOfBombs);
              console.log(arraybombe);
@@ -61,37 +64,71 @@ domButton.addEventListener('click',
                 let currentElement = createNewSquare(i,nrcaselle);
             
                 currentElement.addEventListener('click', function() {
-                    this.classList.toggle('blue');
-                    console.log(i);
-
-
-                    casellacliccata = i;
-                    let bombatrovata = false;
-                    for (let i = 0; i<arraybombe.length; i++){
-                        if(casellacliccata == arraybombe[i]){
-                            bombatrovata = true;
-                        }
-                    }
-                    if (bombatrovata == true){
-                        currentElement.classList.add('red');
+                    if (!gameOver){
+                        this.classList.toggle('blue');
+                        console.log(i);
     
-                    }else{
-                        currentElement.classList.add('blue');
+    
+                        casellacliccata = i;
+                        let bombatrovata = false;
+                        for (let i = 0; i<arraybombe.length; i++){
+                            if(casellacliccata == arraybombe[i]){
+                                bombatrovata = true;
+                                
+                            }
+                        }
+                        if (bombatrovata == true){ //sono saltato su una bomba
+                            currentElement.classList.add('red');
+                            gameOver = true;
+                            discoverBombs(arraybombe);
+                            myscoreDom.innerHTML = "Game over - Il tuo punteggio è:" + freeCells.length;
+                        }else{
+                            currentElement.classList.add('blue');
+                           
+                           if (!freeCells.includes(i)){
+                            freeCells.push(i);
+                           }
+
+                           let checkWinner = win(freeCells, nrcaselle);
+                           if (checkWinner){
+                            myscoreDom.innerHTML = "Complimenti hai vinto";
+                           }else{
+                            myscoreDom.innerHTML = "Il tuo punteggio è:" + freeCells.length;
+                           } 
+                           
+                        }  
                     }
+                   
                     
 
                 });
+               
                
                 gridDom.append(currentElement);
             }
            console.log(nrcaselle); 
 
+function win (freeCells, nrcaselle){
+    let maxFreeCell = nrcaselle -16;
+    if (freeCells.length == maxFreeCell){
+        return true;
+    }else {
+        return false;
+    }
+}
 
 
 
 
-
-
+function discoverBombs(arraybombe){
+    const currentElement = document.getElementsByClassName('square');
+    console.log(currentElement);
+    for (let i = 0; i <currentElement.length; i++){
+        if (arraybombe.includes((i + 1))) {
+            currentElement[i].classList.add('red');
+        }
+    }
+}
 
           // Funzione che crea ogni singolo box all'interno del grid principale
            function createNewSquare(numero) {
